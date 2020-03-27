@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\City;
+use App\Models\SubCity;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CityPolicies
+class SubCitiesPolicy
 {
     use HandlesAuthorization;
 
@@ -16,7 +16,7 @@ class CityPolicies
     }
 
     /**
-     * Determine whether the user can view any cities.
+     * Determine whether the user can view any sub cities.
      *
      * @param User $user
      * @return mixed
@@ -27,19 +27,19 @@ class CityPolicies
     }
 
     /**
-     * Determine whether the user can view the city.
+     * Determine whether the user can view the sub city.
      *
      * @param User $user
-     * @param City $city
+     * @param SubCity $subCity
      * @return mixed
      */
-    public function view(User $user, City $city)
+    public function view(User $user, SubCity $subCity)
     {
         return true;
     }
 
     /**
-     * Determine whether the user can create cities.
+     * Determine whether the user can create sub cities.
      *
      * @param User $user
      * @return mixed
@@ -50,49 +50,49 @@ class CityPolicies
     }
 
     /**
-     * Determine whether the user can update the city.
+     * Determine whether the user can update the sub city.
      *
      * @param User $user
-     * @param City $city
+     * @param SubCity $subCity
      * @return mixed
      */
-    public function update(User $user, City $city)
+    public function update(User $user, SubCity $subCity)
     {
         return true;
     }
 
     /**
-     * Determine whether the user can delete the city.
+     * Determine whether the user can delete the sub city.
      *
      * @param User $user
-     * @param City $city
+     * @param SubCity $subCity
      * @return mixed
      */
-    public function delete(User $user, City $city)
+    public function delete(User $user, SubCity $subCity)
     {
         return true;
     }
 
     /**
-     * Determine whether the user can restore the city.
+     * Determine whether the user can restore the sub city.
      *
      * @param User $user
-     * @param City $city
+     * @param SubCity $subCity
      * @return mixed
      */
-    public function restore(User $user, City $city)
+    public function restore(User $user, SubCity $subCity)
     {
         return true;
     }
 
     /**
-     * Determine whether the user can permanently delete the city.
+     * Determine whether the user can permanently delete the sub city.
      *
      * @param User $user
-     * @param City $city
+     * @param SubCity $subCity
      * @return mixed
      */
-    public function forceDelete(User $user, City $city)
+    public function forceDelete(User $user, SubCity $subCity)
     {
         return true;
     }

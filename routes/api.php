@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['namespace' => 'Dashboards'], function () {
+    Route::get('/dashboard/count_data', 'DashboardsController@getDashboardCountData');
+    Route::get('/dashboard/regional_call_reports', 'DashboardsController@getRegionalCallReports');
+    Route::get('/dashboard/reports_history/{id}', 'DashboardsController@getDailyReportsHistoryCount');
+});
+
 Route::group(['namespace' => 'Authentications'], function () {
     Route::post('/authenticate', 'AuthenticationController@authenticate');
     Route::post('/register', 'AuthenticationController@register');
@@ -39,24 +45,42 @@ Route::group(['namespace' => 'LocationCtl'], function () {
     Route::delete('/wereda/{id}', 'WeredaController@deleteWereda');
 
     Route::get('/cities/{id}', 'CitiesController@getCitiesList');
+    Route::get('/cities_by_region/{id}', 'CitiesController@getCitiesListByRegion');
     Route::get('/cities_paginated/{id}', 'CitiesController@getCitiesPaginated');
     Route::post('/city', 'CitiesController@createCity');
     Route::patch('/city', 'CitiesController@updateCity');
     Route::delete('/city/{id}', 'CitiesController@deleteCity');
+
+    Route::get('/sub_cities/{id}', 'SubCitiesController@getSubCitiesList');
+    Route::get('/sub_cities_paginated/{id}', 'SubCitiesController@getSubCitiesPaginated');
+    Route::post('/sub_city', 'SubCitiesController@createSubCity');
+    Route::patch('/sub_city', 'SubCitiesController@updateSubCity');
+    Route::delete('/sub_city/{id}', 'SubCitiesController@deleteSubCity');
+});
+
+Route::group(['namespace' => 'CallReports'], function () {
+    Route::get('/rumor_types', 'CallReportsController@getRumorTypes');
+    Route::get('/call_reports_of_user', 'CallReportsController@getCallReports');
+    Route::post('/call_report', 'CallReportsController@createCallReport');
+    Route::patch('/call_report', 'CallReportsController@updateCallReport');
+    Route::delete('/call_report/{id}', 'CallReportsController@deleteCallReport');
 });
 
 Route::group(['namespace' => 'Reports'], function () {
-    Route::get('/call_rumor_types', 'CallReportsController@getCallRumorTypes');
-    Route::get('/call_reports_paginated_by_user', 'CallReportsController@getReportsByUserPaginated');
-    Route::get('/all_call_reports_paginated', 'CallReportsController@getAllCallReportsPaginated');
-    Route::get('/new_call_reports_paginated', 'CallReportsController@getNewCallReportsPaginated');
+    // CallReports Section
+    Route::get('/new_call_reports', 'CallReportsController@getNewCallReports');
+    Route::get('/all_call_reports', 'CallReportsController@getAllCallReports');
+    Route::patch('/update_call_report', 'CallReportsController@updateCallReport');
 
     Route::get('/all_rapid_call_reports_paginated', 'CallReportsController@getNewRapidCallReportsPaginated');
     Route::get('/new_followup_call_reports_paginated', 'CallReportsController@getNewFollowupCallReportsPaginated');
-    Route::post('/call_report', 'CallReportsController@createCallReport');
-    Route::patch('/call_report', 'CallReportsController@updateCallReport');
-    Route::patch('/call_report_status', 'CallReportsController@updateCallReportStatus');
-    Route::delete('/call_report/{id}', 'CallReportsController@deleteCallReport');
+
+});
+
+Route::group(['namespace' => 'RapidResponses'], function () {
+    // CallReports Section
+    Route::get('/get_new_rapid_call_reports', 'CallReportsController@getNewRapidCallReportsPaginated');
+    Route::get('/get_assigned_rapid_call_reports', 'CallReportsController@getNewRapidCallReportsPaginated');
 });
 
 Route::group(['namespace' => 'Users'], function () {
@@ -65,7 +89,8 @@ Route::group(['namespace' => 'Users'], function () {
     Route::get('/users_paginated', 'UsersController@getUsersPaginated');
     Route::post('/user', 'UsersController@createUser');
     Route::patch('/user', 'UsersController@updateUsers');
-    Route::patch('/user/{id}', 'UsersController@deleteUser');
+    Route::patch('/user_status', 'UsersController@updateUserStatus');
+    Route::delete('/user/{id}', 'UsersController@deleteUser');
 });
 
 Route::group(['namespace' => 'Reports'], function () {

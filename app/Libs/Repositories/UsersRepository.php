@@ -46,7 +46,7 @@ class UsersRepository extends DefaultRepository implements UserInterface
         if ($queryData == null) {
             $queryData = array();
         }
-        return User::where(function ($query) use ($queryData) {
+        return User::with('region', 'role')->where(function ($query) use ($queryData) {
             $this->queryBuilder($query, $queryData);
         })
             ->get();
@@ -57,36 +57,11 @@ class UsersRepository extends DefaultRepository implements UserInterface
         if ($queryData == null) {
             $queryData = array();
         }
-        return User::with('role')->where(function ($query) use ($queryData) {
+        return User::with('region', 'role')->where(function ($query) use ($queryData) {
             $this->queryBuilder($query, $queryData);
         })
             ->paginate($pagination_size);
     }
-
-    public function getAllByZone($zone_id, $queryData = null)
-    {
-        if ($queryData == null) {
-            $queryData = array();
-        }
-        return User::with('zone')->where('zone_id', '=', $zone_id)
-            ->where(function ($query) use ($queryData) {
-                $this->queryBuilder($query, $queryData);
-            })
-            ->get();
-    }
-
-    public function getAllByZonePaginated($zone_id, $pagination_size = 10, $queryData = null)
-    {
-        if ($queryData == null) {
-            $queryData = array();
-        }
-        return User::with('zone')->where('zone_id', '=', $zone_id)
-            ->where(function ($query) use ($queryData) {
-                $this->queryBuilder($query, $queryData);
-            })
-            ->paginate($pagination_size);
-    }
-
 
     public function addNew($inputData)
     {
@@ -95,7 +70,9 @@ class UsersRepository extends DefaultRepository implements UserInterface
         $newUser->full_name = isset($inputData['full_name']) ? $inputData['full_name'] : null;
         $newUser->email = isset($inputData['email']) ? $inputData['email'] : null;
         $newUser->phone = isset($inputData['phone']) ? $inputData['phone'] : null;
-        $newUser->password = isset($inputData['password']) ? $inputData['password'] : null;
+        $newUser->region_id = isset($inputData['region_id']) ? $inputData['region_id'] : null;
+        $newUser->call_center = isset($inputData['call_center']) ? $inputData['call_center'] : null;
+        $newUser->password = isset($inputData['password']) ? bcrypt($inputData['password']) : bcrypt($inputData['password']);
         $newUser->save();
         return $newUser;
     }
@@ -105,8 +82,7 @@ class UsersRepository extends DefaultRepository implements UserInterface
         if ($queryData == null) {
             $queryData = array();
         }
-        $queryData['id'] = $id;
-        return User::where(function ($query) use ($queryData) {
+        return User::where('id', '=', $id)->where(function ($query) use ($queryData) {
             if ($queryData) {
                 $this->queryBuilder($query, $queryData);
             }

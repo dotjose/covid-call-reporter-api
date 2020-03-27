@@ -15,6 +15,8 @@ class CreateCallReportsTable extends Migration
     {
         Schema::create('call_reports', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('server_id')->nullable();
+            $table->unsignedBigInteger('report_region_id')->nullable();
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('zone_id')->nullable();
             $table->unsignedBigInteger('wereda_id')->nullable();
@@ -25,8 +27,9 @@ class CreateCallReportsTable extends Migration
             $table->string('full_name')->nullable();
             $table->integer('age')->nullable();
             $table->string('phone')->nullable();
+            $table->string('second_phone')->nullable();
             $table->string('occupation')->nullable();
-            $table->string('callerType')->nullable();
+            $table->string('caller_type')->nullable();
             $table->string('other')->nullable();
             $table->string('report_type')->nullable();
             $table->integer('report_group_id')->default(0);
@@ -34,12 +37,13 @@ class CreateCallReportsTable extends Migration
             $table->longText('remark_1')->nullable();
             $table->longText('remark_2')->nullable();
             $table->enum('gender', \App\Models\CallReport::GENDER);
-            $table->boolean('travel_hx')->default(false);
-            $table->boolean('have_sex')->default(false);
-            $table->boolean('animal_market')->default(false);
-            $table->boolean('health_facility')->default(false);
+            $table->boolean('is_travel_hx')->default(false);
+            $table->boolean('is_contacted_with_pt')->default(false);
+            $table->boolean('is_visited_animal')->default(false);
+            $table->boolean('is_visited_hf')->default(false);
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('report_region_id')->references('id')->on('regions')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('region_id')->references('id')->on('regions')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('zone_id')->references('id')->on('zones')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('wereda_id')->references('id')->on('weredas')->onDelete('restrict')->onUpdate('cascade');
